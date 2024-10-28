@@ -7,7 +7,7 @@ import { RedisService } from './redis/redis.service';
   imports: [
     NestRedisModule.forRoot({
       config: {
-        host: 'your-redis-cloud-host', // Redis cloud host manzili
+        host: '', // Redis cloud host manzili
         port: your-redis-cloud-port,    // Redis cloud port raqami
         password: 'your-redis-password', // Redis parolingiz
       },
