@@ -8,23 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisModule = void 0;
 const common_1 = require("@nestjs/common");
-const ioredis_1 = require("ioredis");
+const ioredis_1 = require("@nestjs-modules/ioredis");
+const redis_service_1 = require("./redis/redis.service");
 let RedisModule = class RedisModule {
 };
 exports.RedisModule = RedisModule;
 exports.RedisModule = RedisModule = __decorate([
-    (0, common_1.Global)(),
     (0, common_1.Module)({
-        providers: [
-            {
-                provide: 'REDIS_CLIENT',
-                useFactory: () => {
-                    const redis = new ioredis_1.default();
-                    return redis;
+        imports: [
+            ioredis_1.RedisModule.forRoot({
+                config: {
+                    host: 'your-redis-cloud-host',
+                    port: your - redis - cloud - port,
+                    password: 'your-redis-password',
                 },
-            },
+            }),
         ],
-        exports: ['REDIS_CLIENT'],
+        providers: [redis_service_1.RedisService],
+        exports: [ioredis_1.RedisModule, redis_service_1.RedisService],
     })
 ], RedisModule);
 //# sourceMappingURL=redis.module.js.map

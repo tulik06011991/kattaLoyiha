@@ -1,7 +1,7 @@
-import Redis from 'ioredis';
+import { Redis } from '@nestjs-modules/ioredis';
 export declare class RedisService {
-    private readonly redisClient;
-    constructor(redisClient: Redis);
-    set(key: string, value: any): Promise<void>;
-    get(key: string): Promise<any>;
+    private readonly redis;
+    constructor(redis: Redis);
+    get(key: string): Promise<string | null>;
+    set(key: string, value: string): Promise<void>;
 }

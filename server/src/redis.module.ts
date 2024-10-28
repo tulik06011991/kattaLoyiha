@@ -1,17 +1,19 @@
-import { Module, Global } from '@nestjs/common';
-import Redis from 'ioredis';
+// src/redis.module.ts
+import { Module } from '@nestjs/common';
+import { RedisModule as NestRedisModule } from '@nestjs-modules/ioredis';
+import { RedisService } from './redis/redis.service';
 
-@Global()
 @Module({
-  providers: [
-    {
-      provide: 'REDIS_CLIENT',
-      useFactory: () => {
-        const redis = new Redis(); // Agar kerak bo'lsa, bu yerga sozlamalarni qo'shing
-        return redis;
+  imports: [
+    NestRedisModule.forRoot({
+      config: {
+        host: 'your-redis-cloud-host', // Redis cloud host manzili
+        port: your-redis-cloud-port,    // Redis cloud port raqami
+        password: 'your-redis-password', // Redis parolingiz
       },
-    },
+    }),
   ],
-  exports: ['REDIS_CLIENT'],
+  providers: [RedisService],
+  exports: [NestRedisModule, RedisService],
 })
 export class RedisModule {}

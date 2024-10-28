@@ -11,26 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisService = void 0;
 const common_1 = require("@nestjs/common");
-const ioredis_1 = require("ioredis");
+const ioredis_1 = require("@nestjs-modules/ioredis");
 let RedisService = class RedisService {
-    constructor(redisClient) {
-        this.redisClient = redisClient;
-    }
-    async set(key, value) {
-        await this.redisClient.set(key, JSON.stringify(value));
+    constructor(redis) {
+        this.redis = redis;
     }
     async get(key) {
-        const data = await this.redisClient.get(key);
-        return data ? JSON.parse(data) : null;
+        return await this.redis.get(key);
+    }
+    async set(key, value) {
+        await this.redis.set(key, value);
     }
 };
 exports.RedisService = RedisService;
 exports.RedisService = RedisService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('REDIS_CLIENT')),
-    __metadata("design:paramtypes", [ioredis_1.default])
+    __param(0, (0, ioredis_1.InjectRedis)()),
+    __metadata("design:paramtypes", [typeof (_a = typeof ioredis_1.Redis !== "undefined" && ioredis_1.Redis) === "function" ? _a : Object])
 ], RedisService);
 //# sourceMappingURL=redis.service.js.map
