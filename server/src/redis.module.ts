@@ -1,19 +1,33 @@
-// src/redis.module.ts
-import { Module } from '@nestjs/common';
-import { RedisModule as NestRedisModule } from '@nestjs-modules/ioredis';
-import { RedisService } from './redis/redis.service';
+import { Module, Global } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { createClient } from 'redis';
+import { RedisService } from './redis.service';
 
+@Global()
 @Module({
-  imports: [
-    NestRedisModule.forRoot({
-      config: {
-        host: '', // Redis cloud host manzili
-        port: your-redis-cloud-port,    // Redis cloud port raqami
-        password: 'your-redis-password', // Redis parolingiz
+  imports: [ConfigModule],
+  providers: [
+    {
+      provide: 'REDIS_CLIENT',
+      useFactory: async (configService: ConfigService) => {
+        const client = createClient({
+          socket: {
+            host: configService.get<string>('REDIS_HOST'),
+            port: configService.get<number>('REDIS_PORT'),
+          },
+          password: configService.get<string>('REDIS_PASSWORD'),
+        });
+
+        client.on('error', (err) => console.error('Redis Client Error', err));
+        
+        await client.connect();
+        console.log('Connected to Redis Cloud');
+        return client;
       },
-    }),
+      inject: [ConfigService],
+    },
+    RedisService,
   ],
-  providers: [RedisService],
-  exports: [NestRedisModule, RedisService],
+  exports: ['REDIS_CLIENT', RedisService],
 })
 export class RedisModule {}
