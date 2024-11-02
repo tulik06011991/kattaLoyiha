@@ -20,16 +20,14 @@ export class UserService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.userRepository.findOne({ where: { email } });
+    const user = await this.userRepository.findOne({ where: { email } }) as User;
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Token yoki session uchun Redisga saqlash mumkin
-    const sessionId = `${user.id}:${new Date().getTime()}`; // Misol uchun, oddiy session ID
+    const sessionId = `${user.id}:${new Date().getTime()}`;
     await this.redisService.set(`session:${sessionId}`, user.id.toString(), 3600); // 1 soat
-
 
     return { sessionId };
   }
