@@ -8,24 +8,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisModule = void 0;
 const common_1 = require("@nestjs/common");
-const ioredis_1 = require("@nestjs-modules/ioredis");
-const redis_service_1 = require("./redis/redis.service");
+const config_1 = require("@nestjs/config");
+const redis_1 = require("redis");
+const redis_service_1 = require("./redis.service");
 let RedisModule = class RedisModule {
 };
 exports.RedisModule = RedisModule;
 exports.RedisModule = RedisModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
-        imports: [
-            ioredis_1.RedisModule.forRoot({
-                config: {
-                    host: '',
-                    port: your - redis - cloud - port,
-                    password: 'your-redis-password',
+        imports: [config_1.ConfigModule],
+        providers: [
+            {
+                provide: 'REDIS_CLIENT',
+                useFactory: async (configService) => {
+                    const client = (0, redis_1.createClient)({
+                        socket: {
+                            host: configService.get('REDIS_HOST'),
+                            port: configService.get('REDIS_PORT'),
+                        },
+                        password: configService.get('REDIS_PASSWORD'),
+                    });
+                    client.on('error', (err) => console.error('Redis Client Error', err));
+                    await client.connect();
+                    console.log('Connected to Redis Cloud');
+                    return client;
                 },
-            }),
+                inject: [config_1.ConfigService],
+            },
+            redis_service_1.RedisService,
         ],
-        providers: [redis_service_1.RedisService],
-        exports: [ioredis_1.RedisModule, redis_service_1.RedisService],
+        exports: ['REDIS_CLIENT', redis_service_1.RedisService],
     })
 ], RedisModule);
 //# sourceMappingURL=redis.module.js.map

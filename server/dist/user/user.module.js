@@ -6,25 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
-const redis_module_1 = require("./redis.module");
-const postgres_module_1 = require("./postgres.module");
-const user_module_1 = require("./user/user.module");
-let AppModule = class AppModule {
+const typeorm_1 = require("@nestjs/typeorm");
+const user_controller_1 = require("./user.controller");
+const user_service_1 = require("./user.service");
+const user_entity_1 = require("../user/entities/user.entity");
+const redis_module_1 = require("../redis.module");
+let UserModule = class UserModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.UserModule = UserModule;
+exports.UserModule = UserModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            config_1.ConfigModule.forRoot({
-                isGlobal: true,
-            }),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             redis_module_1.RedisModule,
-            postgres_module_1.PostgresModule,
-            user_module_1.UserModule,
         ],
+        controllers: [user_controller_1.UserController],
+        providers: [user_service_1.UserService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], UserModule);
+//# sourceMappingURL=user.module.js.map

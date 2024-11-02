@@ -1,7 +1,9 @@
-import { Redis } from '@nestjs-modules/ioredis';
-export declare class RedisService {
-    private readonly redis;
-    constructor(redis: Redis);
+import { OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+export declare class RedisService implements OnModuleInit, OnModuleDestroy {
+    private client;
+    onModuleInit(): Promise<void>;
+    onModuleDestroy(): Promise<void>;
+    set(key: string, value: string, expirationInSeconds?: number): Promise<void>;
     get(key: string): Promise<string | null>;
-    set(key: string, value: string): Promise<void>;
+    del(key: string): Promise<number>;
 }
