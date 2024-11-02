@@ -9,5 +9,5 @@ export class User {
   email: string;
 
   @Column()
-  password: string; // Aslida parolni shifrlab saqlash kerak!
+  password: string;
 }

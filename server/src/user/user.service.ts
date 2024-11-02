@@ -28,7 +28,8 @@ export class UserService {
 
     // Token yoki session uchun Redisga saqlash mumkin
     const sessionId = `${user.id}:${new Date().getTime()}`; // Misol uchun, oddiy session ID
-    await this.redisService.set(`session:${sessionId}`, user.id, 3600); // 1 soat
+    await this.redisService.set(`session:${sessionId}`, user.id.toString(), 3600); // 1 soat
+
 
     return { sessionId };
   }
