@@ -5,7 +5,7 @@ export declare class UserService {
     private readonly userRepository;
     private readonly redisService;
     constructor(userRepository: Repository<User>, redisService: RedisService);
-    register(email: string, password: string): Promise<User>;
+    register(email: string, password: string): Promise<any>;
     login(email: string, password: string): Promise<{
         sessionId: string;
     }>;
