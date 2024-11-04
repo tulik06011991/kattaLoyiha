@@ -3,7 +3,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RedisModule } from './redis.module';
 import { PostgresModule } from './postgres.module';
-import { UserModule } from './user/user.module';
+
+import { AuthorizationModule } from './authorization/authorization.module';
 
 
 @Module({
@@ -13,7 +14,8 @@ import { UserModule } from './user/user.module';
     }),
     RedisModule,
     PostgresModule,
-    UserModule,
+    
+    AuthorizationModule,
   ],
 })
 export class AppModule {}
